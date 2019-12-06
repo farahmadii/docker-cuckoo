@@ -78,7 +78,7 @@ services:
       - cuckoo
 
   postgres:
-    image: postgres
+    image: postgres:9.6.0
     ports:
       - 5432
     environment:

@@ -4,7 +4,7 @@ LABEL maintainer "https://github.com/blacktop"
 
 ARG DEFAULT_CUCKOO_UID=1000
 
-ENV CUCKOO_VERSION 2.0.6
+ENV CUCKOO_VERSION 2.0.7
 ENV CUCKOO_CWD /cuckoo
 ENV CUCKOO_PACKAGE_PATH=/usr/lib/python2.7/site-packages/cuckoo
 ENV CUCKOO_FORK_REPO=ilyaglow/cuckoo/remotevbox-machinery

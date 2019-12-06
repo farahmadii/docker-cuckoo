@@ -12,7 +12,8 @@ services:
         - "2042:2042"
     volumes:
       - ./cuckoo-tmp/:/tmp/cuckoo-tmp/
-      - /mnt/cuckoo-storage/:/cuckoo/storage/
+      - ./cuckoo-tmp/:/tmp/cuckoo-tmp-cuckoo/
+      - /home/farzan/cuckoo_storage/:/cuckoo/storage/
       - ./vbox/conf/:/cuckoo/conf/
     env_file:
       - ./vbox/config-file.env
@@ -33,7 +34,8 @@ services:
     command: web
     volumes:
       - ./cuckoo-tmp/:/tmp/cuckoo-tmp/
-      - /mnt/cuckoo-storage/:/cuckoo/storage/
+      - ./cuckoo-tmp/:/tmp/cuckoo-tmp-cuckoo/
+      - /home/farzan/cuckoo_storage/:/cuckoo/storage/
       - ./vbox/conf/:/cuckoo/conf/
     env_file:
       - ./vbox/config-file.env
@@ -42,6 +44,7 @@ services:
     depends_on:
       - postgres
       - cuckoo
+
     build:
       dockerfile: vbox/Dockerfile
       context: .
@@ -52,7 +55,8 @@ services:
     command: api
     volumes:
       - ./cuckoo-tmp/:/tmp/cuckoo-tmp/
-      - /mnt/cuckoo-storage/:/cuckoo/storage/
+      - ./cuckoo-tmp/:/tmp/cuckoo-tmp-cuckoo/
+      - /home/farzan/cuckoo_storage/:/cuckoo/storage/
       - ./vbox/conf/:/cuckoo/conf/
     env_file:
       - ./vbox/config-file.env
