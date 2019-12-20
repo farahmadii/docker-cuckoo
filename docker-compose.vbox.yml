@@ -2,6 +2,7 @@ version: "2"
 
 services:
   cuckoo:
+    image: cuckoo_local
     build:
       dockerfile: vbox/Dockerfile
       context: .
@@ -19,11 +20,7 @@ services:
       - ./vbox/config-file.env
 
   web:
-    build:
-      dockerfile: vbox/Dockerfile
-      context: .
-      args:
-        - CUCKOO_UID=1000
+    image: cuckoo_local
     ports:
       - "80:31337"
     depends_on:
@@ -45,11 +42,7 @@ services:
       - postgres
       - cuckoo
 
-    build:
-      dockerfile: vbox/Dockerfile
-      context: .
-      args:
-        - CUCKOO_UID=1000
+    image: cuckoo_local
     ports:
         - "8000:1337"
     command: api

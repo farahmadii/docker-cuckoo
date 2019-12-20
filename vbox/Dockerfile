@@ -5,8 +5,9 @@ LABEL maintainer "https://github.com/blacktop"
 ARG DEFAULT_CUCKOO_UID=1000
 
 ENV CUCKOO_VERSION 2.0.7
+ENV CUCKOO_GIT_URL=https://github.com/farahmadii/cuckoo.git
 ENV CUCKOO_CWD /cuckoo
-ENV CUCKOO_PACKAGE_PATH=/usr/lib/python2.7/site-packages/cuckoo
+ENV CUCKOO_PACKAGE_PATH=/usr/lib/python2.7/site-packages/Cuckoo-2.0.7-py2.7.egg/cuckoo
 ENV CUCKOO_FORK_REPO=ilyaglow/cuckoo/remotevbox-machinery
 ENV SSDEEP 2.14.1
 
@@ -68,7 +69,13 @@ RUN apk add --update --no-cache tcpdump py-lxml py-chardet py-libvirt py-crypto 
   && export PIP_DISABLE_PIP_VERSION_CHECK=on \
   && pip install --upgrade wheel setuptools \
   && pip install pip==9.0.3 remotevbox \
-  && LDFLAGS=-L/lib pip install cuckoo==$CUCKOO_VERSION \
+  && git clone -q $CUCKOO_GIT_URL /tmp/cuckoo_repo \
+  && cd /tmp/cuckoo_repo \
+  && git checkout buildwatch_analyzer || true \
+  && python stuff/monitor.py \
+  && python setup.py sdist \
+  && LDFLAGS=-L/lib python setup.py install \
+  && cd - \
   && cuckoo \
   && cuckoo community \
   && echo "===> Install additional dependencies..." \
