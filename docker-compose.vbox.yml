@@ -2,6 +2,7 @@ version: "2"
 
 services:
   cuckoo:
+    container_name: cuckoo_commandline
     image: cuckoo_local
     build:
       dockerfile: vbox/Dockerfile
@@ -16,65 +17,7 @@ services:
       - ./cuckoo-tmp/:/tmp/cuckoo-tmp-cuckoo/
       - /home/farzan/cuckoo_storage/:/cuckoo/storage/
       - ./vbox/conf/:/cuckoo/conf/
+      - /home/farzan/Workspace/uni/WS2019/IT_Sec_LAB/analyzer_scripts/devsecopssamples/samples/pypi_converted/typo_packages:/cuckoo/test_packages:ro
+      - /home/farzan/cuckoo_storage/database:/cuckoo/database
     env_file:
       - ./vbox/config-file.env
-
-  web:
-    image: cuckoo_local
-    ports:
-      - "80:31337"
-    depends_on:
-      - mongo
-      - elasticsearch
-      - postgres
-      - cuckoo
-    command: web
-    volumes:
-      - ./cuckoo-tmp/:/tmp/cuckoo-tmp/
-      - ./cuckoo-tmp/:/tmp/cuckoo-tmp-cuckoo/
-      - /home/farzan/cuckoo_storage/:/cuckoo/storage/
-      - ./vbox/conf/:/cuckoo/conf/
-    env_file:
-      - ./vbox/config-file.env
-
-  api:
-    depends_on:
-      - postgres
-      - cuckoo
-
-    image: cuckoo_local
-    ports:
-        - "8000:1337"
-    command: api
-    volumes:
-      - ./cuckoo-tmp/:/tmp/cuckoo-tmp/
-      - ./cuckoo-tmp/:/tmp/cuckoo-tmp-cuckoo/
-      - /home/farzan/cuckoo_storage/:/cuckoo/storage/
-      - ./vbox/conf/:/cuckoo/conf/
-    env_file:
-      - ./vbox/config-file.env
-
-  mongo:
-    image: mongo
-    volumes:
-      - mongo-data:/data/db
-
-  elasticsearch:
-    image: blacktop/elasticsearch:5.6
-    volumes:
-      - es-data:/usr/share/elasticsearch/data
-
-  postgres:
-    image: postgres
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: cuckoo
-      PGDATA: /var/lib/postgresql/data/pgdata
-      # POSTGRES_INITDB_ARGS: --data-checksums
-    volumes:
-      - postgres-data:/var/lib/postgresql/data/pgdata
-
-volumes:
-  mongo-data:
-  es-data:
-  postgres-data:
